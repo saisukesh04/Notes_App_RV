@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
 
         recyclerView.setLayoutManager(layoutManager);
 
-            adapter = new RecyclerViewAdapter(modelClassList);
+            adapter = new RecyclerViewAdapter(modelClassList, this);
             recyclerView.setAdapter(adapter);
 
     }
