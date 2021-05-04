@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -20,6 +21,16 @@ public class NoteActivity extends AppCompatActivity {
 
     public static EditText titleNote;
     public static EditText bodyNote;
+
+    @Override
+    public void onBackPressed() {
+
+        ModelClass modelClass = new ModelClass(titleNote.getText().toString(), bodyNote.getText().toString());
+        modelClassList.add(modelClass);
+        adapter.notifyDataSetChanged();
+
+        super.onBackPressed();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,11 +54,18 @@ public class NoteActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                ModelClass modelClass = new ModelClass(titleNote.getText().toString(), bodyNote.getText().toString());
-                modelClassList.add(modelClass);
-                adapter.notifyDataSetChanged();
-                startActivity(new Intent(NoteActivity.this, MainActivity.class));
+                if(titleNote.getText().toString() == null || bodyNote.getText().toString() == null){
+                    Toast.makeText(NoteActivity.this, "Please fill in the fields to add the note!", Toast.LENGTH_SHORT).show();
+                }else {
+                    Log.i("titlexx" , titleNote.getText().toString());
+                    ModelClass modelClass = new ModelClass(titleNote.getText().toString(), bodyNote.getText().toString());
+                    modelClassList.add(modelClass);
+                    adapter.notifyDataSetChanged();
+                    startActivity(new Intent(NoteActivity.this, MainActivity.class));
+                    finish();
+                }
             }
         });
+
     }
 }

@@ -1,21 +1,23 @@
 package com.example.notesapp;
 
+import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
-import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-import static com.example.notesapp.NoteActivity.bodyNote;
-import static com.example.notesapp.NoteActivity.titleNote;
+import static com.example.notesapp.MainActivity.recyclerView;
+
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.Viewholder> {
 
@@ -48,12 +50,19 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                removeItem(position);
+
                 Intent intent = new Intent(context, NoteActivity.class);
                 intent.putExtra("Title", title);
                 intent.putExtra("Body", body);
                 context.startActivity(intent);
             }
         });
+
+
+
+
     }
 
     @Override
@@ -74,5 +83,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             bodyRow = itemView.findViewById(R.id.descriptionRow);
             cardView = itemView.findViewById(R.id.cardView);
         }
+    }
+
+    public void removeItem(int position) {
+        modelClassList.remove(position);
+        notifyItemRemoved(position);
     }
 }
