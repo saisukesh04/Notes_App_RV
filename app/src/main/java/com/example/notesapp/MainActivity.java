@@ -79,7 +79,6 @@ public class MainActivity extends AppCompatActivity {
                         .addActionIcon(R.drawable.ic_baseline_delete)
                         .create()
                         .decorate();
-
                 super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
             }
         };
