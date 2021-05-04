@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -44,20 +46,21 @@ public class NoteActivity extends AppCompatActivity {
             String title = bundle.getString("Title"), body = bundle.getString("Body");
             titleNote.setText(title);
             bodyNote.setText(body);
-        }catch(Exception e){
+        } catch (Exception e) {
             Log.i("exception", e.getMessage());
         }
 
         FloatingActionButton floatingActionButton = findViewById(R.id.floatingActionButton3);
 
+
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                if(titleNote.getText().toString() == null || bodyNote.getText().toString() == null){
-                    Toast.makeText(NoteActivity.this, "Please fill in the fields to add the note!", Toast.LENGTH_SHORT).show();
-                }else {
-                    Log.i("titlexx" , titleNote.getText().toString());
+                if (titleNote.getText().toString().trim().length() == 0 || bodyNote.getText().toString().trim().length() == 0) {
+                    Toast.makeText(NoteActivity.this, "Please add both title and description!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Log.i("titlexx", titleNote.getText().toString());
                     ModelClass modelClass = new ModelClass(titleNote.getText().toString(), bodyNote.getText().toString());
                     modelClassList.add(modelClass);
                     adapter.notifyDataSetChanged();
