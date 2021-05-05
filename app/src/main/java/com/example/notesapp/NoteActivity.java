@@ -26,11 +26,13 @@ public class NoteActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-
-        ModelClass modelClass = new ModelClass(titleNote.getText().toString(), bodyNote.getText().toString());
-        modelClassList.add(modelClass);
-        adapter.notifyDataSetChanged();
-
+        if (titleNote.getText().toString().trim().length() == 0 || bodyNote.getText().toString().trim().length() == 0) {
+            Toast.makeText(NoteActivity.this, "Please add both title and description!", Toast.LENGTH_SHORT).show();
+        } else {
+            ModelClass modelClass = new ModelClass(titleNote.getText().toString(), bodyNote.getText().toString());
+            modelClassList.add(modelClass);
+            adapter.notifyDataSetChanged();
+        }
         super.onBackPressed();
     }
 
