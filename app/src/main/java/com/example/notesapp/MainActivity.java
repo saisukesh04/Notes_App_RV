@@ -6,6 +6,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
 
 import android.content.Intent;
 import android.graphics.Canvas;
@@ -19,6 +20,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
     public static RecyclerView recyclerView;
     public static List<ModelClass> modelClassList = new ArrayList<>();
     public static RecyclerViewAdapter adapter;
+    AppDatabase db;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,10 +42,16 @@ public class MainActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.recyclerView);
 
+         db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "NOTEs")
+                .allowMainThreadQueries()
+                .build();
+
+        List<ModelClass> modelClasses =  db.noteDao().getAllNotes();
+
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, true);
         recyclerView.setLayoutManager(layoutManager);
         ((LinearLayoutManager) layoutManager).setStackFromEnd(true);
-        adapter = new RecyclerViewAdapter(modelClassList, this);
+        adapter = new RecyclerViewAdapter(modelClasses, this);
         recyclerView.setAdapter(adapter);
 
 

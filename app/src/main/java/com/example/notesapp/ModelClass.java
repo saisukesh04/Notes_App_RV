@@ -1,8 +1,22 @@
 package com.example.notesapp;
 
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+@Entity
 public class ModelClass {
 
-    String titleRow, descriptionRow;
+
+
+    @PrimaryKey(autoGenerate = true)
+    int id;
+
+    @ColumnInfo(name = "title")
+    String titleRow;
+
+    @ColumnInfo(name = "description")
+    String descriptionRow;
 
     public void setTitleRow(String titleRow) {
         this.titleRow = titleRow;
@@ -23,5 +37,13 @@ public class ModelClass {
 
     public String getDescriptionRow() {
         return descriptionRow;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }
