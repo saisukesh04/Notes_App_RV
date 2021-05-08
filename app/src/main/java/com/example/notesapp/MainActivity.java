@@ -28,9 +28,9 @@ import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
 
 public class MainActivity extends AppCompatActivity {
 
-    public static RecyclerView recyclerView;
-    public static List<ModelClass> modelClassList = new ArrayList<>();
-    public static RecyclerViewAdapter adapter;
+    public static   RecyclerView recyclerView;
+    public static   List<ModelClass> modelClassList = new ArrayList<>();
+    public static   RecyclerViewAdapter adapter;
     AppDatabase db;
 
     @Override
@@ -42,16 +42,17 @@ public class MainActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.recyclerView);
 
-         db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "NOTEs")
+        db = Room.databaseBuilder(getApplicationContext(),
+                AppDatabase.class, "modelclass")
                 .allowMainThreadQueries()
                 .build();
 
-        List<ModelClass> modelClasses =  db.noteDao().getAllNotes();
+        modelClassList =  db.noteDao().getAllNotes();
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, true);
         recyclerView.setLayoutManager(layoutManager);
         ((LinearLayoutManager) layoutManager).setStackFromEnd(true);
-        adapter = new RecyclerViewAdapter(modelClasses, this);
+        adapter = new RecyclerViewAdapter(modelClassList, this);
         recyclerView.setAdapter(adapter);
 
 

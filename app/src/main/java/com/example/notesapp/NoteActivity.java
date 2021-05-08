@@ -26,64 +26,23 @@ public class NoteActivity extends AppCompatActivity {
     public static EditText bodyNote;
     AppDatabase db;
 
-
-    @Override
-    protected void onPause() {
-
-        if (titleNote.getText().toString().trim().length() == 0 || bodyNote.getText().toString().trim().length() == 0) {
-            Toast.makeText(NoteActivity.this, "Please add both title and description!", Toast.LENGTH_SHORT).show();
-        } else {
-
-            db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "NOTEs")
-                    .allowMainThreadQueries()
-                    .build();
-            db.noteDao().insertAll(new ModelClass(titleNote.getText().toString(), bodyNote.getText().toString()));
-
-            //ModelClass modelClass = new ModelClass(titleNote.getText().toString(), bodyNote.getText().toString());
-            //modelClassList.add(modelClass);
-            adapter.notifyDataSetChanged();
-        }
-
-        super.onPause();
-    }
-
     @Override
     public void onBackPressed() {
         if (titleNote.getText().toString().trim().length() == 0 || bodyNote.getText().toString().trim().length() == 0) {
             Toast.makeText(NoteActivity.this, "Please add both title and description!", Toast.LENGTH_SHORT).show();
         } else {
-//
-//             db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "NOTEs")
-//                    .allowMainThreadQueries()
-//                    .build();
-//            db.noteDao().insertAll(new ModelClass(titleNote.getText().toString(), bodyNote.getText().toString()));
 
-            //ModelClass modelClass = new ModelClass(titleNote.getText().toString(), bodyNote.getText().toString());
-            //modelClassList.add(modelClass);
+            db = Room.databaseBuilder(getApplicationContext(),
+                    AppDatabase.class, "modelclass")
+                    .allowMainThreadQueries()
+                    .build();
+            db.noteDao().insertAll(new ModelClass(titleNote.getText().toString(), bodyNote.getText().toString()));
+            ModelClass modelClass = new ModelClass(titleNote.getText().toString(), bodyNote.getText().toString());
+            modelClassList.add(modelClass);
             adapter.notifyDataSetChanged();
+            finish();
         }
         super.onBackPressed();
-    }
-
-    @Override
-    protected void onStop() {
-
-        if (titleNote.getText().toString().trim().length() == 0 || bodyNote.getText().toString().trim().length() == 0) {
-            Toast.makeText(NoteActivity.this, "Please add both title and description!", Toast.LENGTH_SHORT).show();
-        } else {
-//
-//            db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "NOTEs")
-//                    .allowMainThreadQueries()
-//                    .build();
-//            db.noteDao().insertAll(new ModelClass(titleNote.getText().toString(), bodyNote.getText().toString()));
-
-            //ModelClass modelClass = new ModelClass(titleNote.getText().toString(), bodyNote.getText().toString());
-            //modelClassList.add(modelClass);
-            adapter.notifyDataSetChanged();
-        }
-        super.onBackPressed();
-
-        super.onStop();
     }
 
     @Override
@@ -113,16 +72,16 @@ public class NoteActivity extends AppCompatActivity {
                     Toast.makeText(NoteActivity.this, "Please add both title and description!", Toast.LENGTH_SHORT).show();
                 } else {
 
-//                    db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "NOTEs")
-//                            .allowMainThreadQueries()
-//                            .build();
-//                    db.noteDao().insertAll(new ModelClass(titleNote.getText().toString(), bodyNote.getText().toString()));
+                    db = Room.databaseBuilder(getApplicationContext(),
+                            AppDatabase.class, "modelclass")
+                            .allowMainThreadQueries()
+                            .build();
+                    db.noteDao().insertAll(new ModelClass(titleNote.getText().toString(), bodyNote.getText().toString()));
 
                     Log.i("titlexx", titleNote.getText().toString());
-                    //ModelClass modelClass = new ModelClass(titleNote.getText().toString(), bodyNote.getText().toString());
-                    //modelClassList.add(modelClass);
+                    ModelClass modelClass = new ModelClass(titleNote.getText().toString(), bodyNote.getText().toString());
+                    modelClassList.add(modelClass);
                     adapter.notifyDataSetChanged();
-                    startActivity(new Intent(NoteActivity.this, MainActivity.class));
                     finish();
                 }
             }

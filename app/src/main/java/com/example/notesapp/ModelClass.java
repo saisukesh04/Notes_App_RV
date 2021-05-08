@@ -4,10 +4,10 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-@Entity
+import java.util.jar.Attributes;
+
+@Entity(tableName = "modelclass")
 public class ModelClass {
-
-
 
     @PrimaryKey(autoGenerate = true)
     int id;
