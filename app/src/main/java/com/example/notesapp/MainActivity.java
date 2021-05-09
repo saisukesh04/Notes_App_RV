@@ -31,7 +31,6 @@ public class MainActivity extends AppCompatActivity {
     public static   RecyclerView recyclerView;
     public static   List<ModelClass> modelClassList = new ArrayList<>();
     public static   RecyclerViewAdapter adapter;
-    AppDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,12 +41,7 @@ public class MainActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.recyclerView);
 
-        db = Room.databaseBuilder(getApplicationContext(),
-                AppDatabase.class, "modelclass")
-                .allowMainThreadQueries()
-                .build();
-
-        modelClassList =  db.noteDao().getAllNotes();
+        modelClassList =  AppDatabase.getInstance(MainActivity.this).noteDao().getAllNotes();
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, true);
         recyclerView.setLayoutManager(layoutManager);
@@ -69,16 +63,16 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "Note Deleted!", Toast.LENGTH_SHORT).show();
                 //Remove swiped item from list and notify the RecyclerView
                 int position = viewHolder.getAdapterPosition();
-                ModelClass modelClass = modelClassList.get(position);
+                ModelClass deleteNote = modelClassList.get(position);
                 modelClassList.remove(position);
-                db.noteDao().delete(modelClass);
+                AppDatabase.getInstance(MainActivity.this).noteDao().delete(deleteNote);
                 adapter.notifyDataSetChanged();
                 Snackbar.make(recyclerView, "Are You sure?", Snackbar.LENGTH_LONG)
                         .setAction("Undo", new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                modelClassList.add(position, modelClass);
-                                db.noteDao().insertAll(modelClass);
+                                modelClassList.add(position, deleteNote);
+                                AppDatabase.getInstance(MainActivity.this).noteDao().insertAll(deleteNote);
                                 adapter.notifyDataSetChanged();
                             }
                         }).show();
@@ -103,6 +97,5 @@ public class MainActivity extends AppCompatActivity {
 
     public void newNote(View view) {
         startActivity(new Intent(MainActivity.this, NoteActivity.class));
-
     }
 }

@@ -24,7 +24,6 @@ public class NoteActivity extends AppCompatActivity {
 
     public static EditText titleNote;
     public static EditText bodyNote;
-    AppDatabase db;
 
     @Override
     public void onBackPressed() {
@@ -32,7 +31,7 @@ public class NoteActivity extends AppCompatActivity {
             Toast.makeText(NoteActivity.this, "Please add both title and description!", Toast.LENGTH_SHORT).show();
         } else {
 
-            db.noteDao().insertAll(new ModelClass(titleNote.getText().toString(), bodyNote.getText().toString()));
+            AppDatabase.getInstance(NoteActivity.this).noteDao().insertAll(new ModelClass(titleNote.getText().toString(), bodyNote.getText().toString()));
             ModelClass modelClass = new ModelClass(titleNote.getText().toString(), bodyNote.getText().toString());
             modelClassList.add(modelClass);
             adapter.notifyDataSetChanged();
@@ -57,11 +56,6 @@ public class NoteActivity extends AppCompatActivity {
             Log.i("exception", e.getMessage());
         }
 
-        db = Room.databaseBuilder(getApplicationContext(),
-                AppDatabase.class, "modelclass")
-                .allowMainThreadQueries()
-                .build();
-
         FloatingActionButton floatingActionButton = findViewById(R.id.floatingActionButton3);
 
 
@@ -73,7 +67,7 @@ public class NoteActivity extends AppCompatActivity {
                     Toast.makeText(NoteActivity.this, "Please add both title and description!", Toast.LENGTH_SHORT).show();
                 } else {
 
-                    db.noteDao().insertAll(new ModelClass(titleNote.getText().toString(), bodyNote.getText().toString()));
+                    AppDatabase.getInstance(NoteActivity.this).noteDao().insertAll(new ModelClass(titleNote.getText().toString(), bodyNote.getText().toString()));
 
                     Log.i("titlexx", titleNote.getText().toString());
                     ModelClass modelClass = new ModelClass(titleNote.getText().toString(), bodyNote.getText().toString());
