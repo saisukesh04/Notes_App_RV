@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
 
 import java.util.List;
 
@@ -24,6 +25,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     private List<ModelClass> modelClassList;
     Context context;
+    AppDatabase db;
 
     public RecyclerViewAdapter(List<ModelClass> modelClassList, Context context) {
         this.modelClassList = modelClassList;
@@ -33,6 +35,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @NonNull
     @Override
     public RecyclerViewAdapter.Viewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
+        db = Room.databaseBuilder(context,
+                AppDatabase.class, "modelclass")
+                .allowMainThreadQueries()
+                .build();
 
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row, parent, false);
         return new Viewholder(view);
@@ -83,6 +90,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     public void removeItem(int position) {
         modelClassList.remove(position);
+        db.noteDao().delete(modelClassList.get(position));
         notifyItemRemoved(position);
     }
 }

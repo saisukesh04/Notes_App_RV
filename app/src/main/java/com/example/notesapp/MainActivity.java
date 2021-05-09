@@ -71,13 +71,15 @@ public class MainActivity extends AppCompatActivity {
                 int position = viewHolder.getAdapterPosition();
                 ModelClass modelClass = modelClassList.get(position);
                 modelClassList.remove(position);
+                db.noteDao().delete(modelClass);
                 adapter.notifyDataSetChanged();
                 Snackbar.make(recyclerView, "Are You sure?", Snackbar.LENGTH_LONG)
                         .setAction("Undo", new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 modelClassList.add(position, modelClass);
-                                adapter.notifyItemInserted(position);
+                                db.noteDao().insertAll(modelClass);
+                                adapter.notifyDataSetChanged();
                             }
                         }).show();
             }

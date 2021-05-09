@@ -32,10 +32,6 @@ public class NoteActivity extends AppCompatActivity {
             Toast.makeText(NoteActivity.this, "Please add both title and description!", Toast.LENGTH_SHORT).show();
         } else {
 
-            db = Room.databaseBuilder(getApplicationContext(),
-                    AppDatabase.class, "modelclass")
-                    .allowMainThreadQueries()
-                    .build();
             db.noteDao().insertAll(new ModelClass(titleNote.getText().toString(), bodyNote.getText().toString()));
             ModelClass modelClass = new ModelClass(titleNote.getText().toString(), bodyNote.getText().toString());
             modelClassList.add(modelClass);
@@ -61,6 +57,11 @@ public class NoteActivity extends AppCompatActivity {
             Log.i("exception", e.getMessage());
         }
 
+        db = Room.databaseBuilder(getApplicationContext(),
+                AppDatabase.class, "modelclass")
+                .allowMainThreadQueries()
+                .build();
+
         FloatingActionButton floatingActionButton = findViewById(R.id.floatingActionButton3);
 
 
@@ -72,10 +73,6 @@ public class NoteActivity extends AppCompatActivity {
                     Toast.makeText(NoteActivity.this, "Please add both title and description!", Toast.LENGTH_SHORT).show();
                 } else {
 
-                    db = Room.databaseBuilder(getApplicationContext(),
-                            AppDatabase.class, "modelclass")
-                            .allowMainThreadQueries()
-                            .build();
                     db.noteDao().insertAll(new ModelClass(titleNote.getText().toString(), bodyNote.getText().toString()));
 
                     Log.i("titlexx", titleNote.getText().toString());
