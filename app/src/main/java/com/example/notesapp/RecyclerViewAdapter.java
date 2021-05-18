@@ -1,27 +1,19 @@
 package com.example.notesapp;
 
-import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.room.Room;
 
 import java.util.List;
 
-import static com.example.notesapp.MainActivity.recyclerView;
-
-
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.Viewholder> {
-
+public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
 
     private List<ModelClass> modelClassList;
     Context context;
@@ -33,14 +25,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @NonNull
     @Override
-    public RecyclerViewAdapter.Viewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row, parent, false);
-        return new Viewholder(view);
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        context = parent.getContext();
+        View view = LayoutInflater.from(context).inflate(R.layout.row, parent, false);
+        return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerViewAdapter.Viewholder holder, int position) {
+    public void onBindViewHolder(@NonNull RecyclerViewAdapter.ViewHolder holder, int position) {
 
         String title = modelClassList.get(position).getTitleRow();
         String body = modelClassList.get(position).getDescriptionRow();
@@ -52,13 +44,16 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             @Override
             public void onClick(View v) {
 
-                removeItem(position);
-
                 Intent intent = new Intent(context, NoteActivity.class);
                 intent.putExtra("Title", title);
                 intent.putExtra("Body", body);
                 context.startActivity(intent);
             }
+        });
+
+        holder.cardView.setOnLongClickListener(view -> {
+            removeItem(position);
+            return true;
         });
     }
 
@@ -67,13 +62,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         return modelClassList.size();
     }
 
-    class Viewholder extends RecyclerView.ViewHolder{
+    static class ViewHolder extends RecyclerView.ViewHolder{
 
         private TextView titleRow;
         private TextView bodyRow ;
         CardView cardView;
 
-        public Viewholder(@NonNull View itemView) {
+        public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             titleRow = itemView.findViewById(R.id.titleRow);
@@ -84,7 +79,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     public void removeItem(int position) {
         modelClassList.remove(position);
-        AppDatabase.getInstance(context).noteDao().delete(modelClassList.get(position));
+        AppDatabase.getInstance(context).noteDao().deleteNote(modelClassList.get(position));
         notifyItemRemoved(position);
     }
 }
