@@ -14,9 +14,9 @@ public interface NoteDao {
     List<ModelClass> getAllNotes();
 
     @Insert
-    void insertAll(ModelClass modelClasses);
+    void insertNote(ModelClass modelClasses);
 
     @Delete
-    void delete(ModelClass modelClass);
+    void deleteNote(ModelClass modelClass);
 
 }

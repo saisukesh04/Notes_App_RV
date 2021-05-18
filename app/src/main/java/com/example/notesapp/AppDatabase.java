@@ -9,7 +9,6 @@ import androidx.room.RoomDatabase;
 @Database(entities = {ModelClass.class}, version = 1, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 
-    public abstract NoteDao noteDao();
     private static final Object LOCK = new Object();
     public static AppDatabase appDatabase;
 
@@ -26,4 +25,5 @@ public abstract class AppDatabase extends RoomDatabase {
         return appDatabase;
     }
 
+    public abstract NoteDao noteDao();
 }
